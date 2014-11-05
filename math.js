@@ -1,3 +1,11 @@
+/**
+ * Создание таблицы
+ *
+ * @param {Number} row количество строк
+ * @param {Number} column количество столбцов
+ * @param {String} matrixName название таблицы
+ * @returns {String}
+ */
 function getTable(row, column, matrixName) {
     var t = [];
 
@@ -15,10 +23,26 @@ function getTable(row, column, matrixName) {
     return t.join('\n');
 }
 
-function getValue(matrixName, i, j) {
-    return parseInt($('#' + matrixName + '_' + i + '_' + j).val(), 10);
+/**
+ * Получение значения из ячейки таблицы
+ *
+ * @param {String} matrixName название таблицы
+ * @param {Number} row строка
+ * @param {Number} column столбец
+ * @returns {Number} значение из ячейки
+ */
+function getValue(matrixName, row, column) {
+    return parseInt($('#' + matrixName + '_' + row + '_' + column).val(), 10);
 }
 
-function setValue(matrixName, i, j, value) {
-    $('#' + matrixName + '_' + i + '_' + j).val(value);
+/**
+ * Установка значения в ячейку таблицы
+ *
+ * @param {String} matrixName название таблицы
+ * @param {Number} row строка
+ * @param {Number} column столбец
+ * @param {*} value устанавливаемое значение
+ */
+function setValue(matrixName, row, column, value) {
+    $('#' + matrixName + '_' + row + '_' + column).val(value);
 }
