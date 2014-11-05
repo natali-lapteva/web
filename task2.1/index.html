@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Задача 2.1</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <div id="postanovka_zadachi">
+        <h2 id="head">Задача 2.1</h2>
+        <h3>Условие:</h3>
+        <p>N видов заводов выпускают m видов продукции за k количество периодов.</p>
+        <p>Необходимо рассчитать:</p>
+        <p>a) суммарную прибыль n заводов за все периоды</p>
+        <p>б) прирост выпуска продукции за период</p>
+        <h3>Условные обозначения:</h3>
+        <p>Ai - матрица выпуска продукции за период</p>
+        <p>Bi - матрица прироста прибыли за период</p>
+        <p>C - матрица суммарной прибыли</p>
+    </div>
+    <div class="vchod"><label for='n'>n = </label><input id='n' value='3'/></div>
+    <div class="vchod"><label for='m'>m = </label><input id='m' value='4'/></div>
+    <div class="vchod"><label for='k'>k = </label><input id='k' value='3'/></div>
+
+    <input class="knopka" type='button' value='Построить' onclick='build();'/>
+    <input class="knopka" type='button' value='Рассчитать' onclick='calc();'/>
+    <input class="knopka" type='button' value='Очистить' onclick='cl();'/>
+
+    <div id='data'></div>
+
+    <div id='sum'></div>
+
+    <div id='incomes'></div>
+
+    <script src="http://yastatic.net/jquery/2.1.1/jquery.min.js" ></script>
+    <script src="../math.js" ></script>
+    <script>
+        var n, m, k;
+
+        function defineDimentions() {
+            n = parseInt($('#n').val(), 10),
+            m = parseInt($('#m').val(), 10),
+            k = parseInt($('#k').val(), 10);
+        }
+
+        function sum (n, m, k) {
+            $('#sum').append('<h3>C</h3>');
+            $('#sum').append(getTable(n, m, 'C'));
+
+            for(var i = 0 ; i < n; i++) {
+                for(var j = 0 ; j < m; j++) {
+                    var sum = 0;
+                    for(var l = 0 ; l < k; l++) {
+                        sum += getValue('A' + l, i, j);
+                    }
+                    setValue('C', i, j, sum);
+                }
+            }
+        }
+
+        function income (n, m, k) {
+            for (var l = 1; l < k; l++) {
+                $('#incomes').append('<h3>B' + l + '</h3>');
+                $('#incomes').append(getTable(n, m, 'B' + l));
+
+                for(var i = 0 ; i < n; i++) {
+                    for(var j = 0 ; j < m; j++) {
+                        var div = getValue('A' + l, i, j) - getValue('A' + (l-1), i, j);
+                        setValue('B'+ l, i, j, div);
+                    }
+                }
+            }
+        }
+
+        build = function() {
+            defineDimentions();
+
+            for(var i = 0 ; i < k; i++) {
+                $('#data').append('<h3>A' + (i+1) + '</h3>');
+                $('#data').append(getTable(n, m, 'A' + i));
+            }
+        };
+
+        calc = function () {
+            defineDimentions();
+
+            sum(n, m, k);
+            income(n, m, k);
+        };
+
+        cl = function() {
+            $('#data').empty();
+            $('#sum').empty();
+            $('#incomes ').empty();
+        }
+    </script>
+</body>
+</html>
