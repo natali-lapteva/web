@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Задача 2.3</title>
+</head>
+<body>
+    <div><label for='n'>n = </label><input id='n' value='3'/></div>
+    <div><label for='k'>k = </label><input id='k' value='2'/></div>
+    <div><label for='p'>p = </label><input id='p' value='3'/></div>
+
+    <input type='button' value='Построить диапазоны для ввода данных' onclick='build();'/>
+    <input type='button' value='Рассчитать' onclick='calc();'/>
+    <input type='button' value='Очистить' onclick='cl();'/>
+
+    <div id='data'></div>
+
+    <div id='result'></div>
+
+    <script src="../jquery.min.js" ></script>
+    <script src="../math.js" ></script>
+
+    <script>
+        var n, k, p;
+
+            function setParam(){
+                n = parseInt($('#n').val(), 10);
+                k = parseInt($('#k').val(), 10);
+                p = parseInt($('#p').val(), 10);
+            }
+
+            function build () {
+                setParam();
+                $('#data').append('<h2>A</h2>');
+                $('#data').append(getTable(n, k, 'A'));
+                $('#data').append('<h2>X</h2>');
+                $('#data').append(getTable(k, 1, 'X'));
+                $('#data').append('<h2>P</h2>');
+                $('#data').append(getTable(1, n, 'P'));
+            }
+
+            function cl (){
+                $('#data').empty();
+                $('#result').empty();
+            }
+    </script>
+
+</body>
+</html>
