@@ -31,20 +31,22 @@
 
     function build() {
         setParam();
-        $('#data').append('<h2>A</h2>');
-        $('#data').append(getTable(n, k, 'A'));
-        $('#data').append('<h2>X</h2>');
-        $('#data').append(getTable(k, 1, 'X'));
-        $('#data').append('<h2>P</h2>');
-        $('#data').append(getTable(1, n, 'P'));
+        var $data = $('#data');
+        $data.append('<h2>A</h2>');
+        $data.append(getTable(n, k, 'A'));
+        $data.append('<h2>X</h2>');
+        $data.append(getTable(k, 1, 'X'));
+        $data.append('<h2>P</h2>');
+        $data.append(getTable(1, n, 'P'));
     }
 
     function calc() {
         setParam();
 
-        $('#result').empty();
-        $('#result').append('<h2>S</h2>');
-        $('#result').append(getTable(n, 1, 'S'));
+        var $result = $('#result');
+        $result.empty();
+        $result.append('<h2>S</h2>');
+        $result.append(getTable(n, 1, 'S'));
 
         var f = 0;
         for (var i = 0; i < n; i++) {
@@ -55,7 +57,7 @@
             setValue('S', i, 0, sum);
             f += sum * getValue('P', 0, i);
         }
-        $('#result').append('<h2>F</h2><div>' + f + '</div>');
+        $result.append('<h2>F</h2><div>' + f + '</div>');
     }
 
     function cl() {
