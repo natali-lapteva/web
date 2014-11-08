@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Прямая задача</title>
+</head>
+<body>
+<div><label for='n'>Количество отраслей </label><input id='n' value='3'/></div>
+
+<input type='button' value='Ввести данные' onclick='build();'/>
+<input type='button' value='Построить решение' onclick='calc();'/>
+<input type='button' value='Построить решение прогнозного года' onclick='calcForecastYear();'/>
+<input type='button' value='Очистить' onclick='cl();'/>
+
+<div id='data'></div>
+<div id='mobBasicYear'></div>
+<div id='mobForecastYear'></div>
+
+<script src="../jquery.min.js"></script>
+<script src="../math.js"></script>
+
+<script>
+    var n, $data = $('#data'), $mobBasicYear = $('#mobBasicYear'), $mobForecastYear = $('mobForecastYear');
+
+    function build() {
+        cl();
+        n = parseInt($('#n').val(), 10);
+        $data.append('<h2>Матрица прямых затрат</h2>');
+        $data.append(getTable(n, n, 'A'));
+        $data.append('<h2>Вектор валовых выпусков</h2>');
+        $data.append(getTable(n, 1, 'X'));
+        $data.append('<h2>Прогноз</h2>');
+        $data.append(getTable(n, 1, 'alpha'));
+    }
+
+    function calc() {
+        $mobBasicYear.empty();
+        n = parseInt($('#n').val(), 10);
+
+    }
+
+    function cl() {
+        $data.empty();
+        $mobBasicYear.empty();
+        $mobForecastYear.empty();
+    }
+</script>
+
+</body>
+</html>
