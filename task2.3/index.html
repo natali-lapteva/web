@@ -30,6 +30,8 @@
     }
 
     function build() {
+        cl();
+
         setParam();
         var $data = $('#data');
         $data.append('<h2>A</h2>');
@@ -41,6 +43,8 @@
     }
 
     function calc() {
+        $('#result').empty();
+
         setParam();
 
         var $result = $('#result');

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Задача 2.4</title>
+</head>
+<body>
+<div><label for='t'>t = </label><input id='t' value='3'/></div>
+<div><label for='n'>n = </label><input id='n' value='3'/></div>
+
+<input type='button' value='Построить' onclick='build();'/>
+<input type='button' value='Рассчитать' onclick='calc();'/>
+<input type='button' value='Очистить' onclick='cl();'/>
+
+<div id='data'></div>
+
+<div id='result'></div>
+
+<script src="../jquery.min.js"></script>
+<script src="../math.js"></script>
+
+<script>
+    var t, n;
+    var $data = $('#data');
+    var $result = $('#result');
+
+    function build() {
+        cl();
+        n = parseInt($('#n').val(), 10);
+
+        $data.append('<h2>X0</h2>');
+        $data.append(getTable(1, n, 'X0'));
+
+        var x0 = getEVector(n);
+        for (var i = 0; i < n; i++){
+            setValue('X0', 0, i, x0[i]);
+        }
+
+        $data.append('<h2>A</h2>');
+        $data.append(getTable(n, n, 'A'));
+
+        for (var i = 0; i < n; i++){
+            var a = getEVector(n);
+            for (var j = 0; j < n; j++){
+                setValue('A', i, j, a[j]);
+            }
+        }
+
+    }
+
+    function calc(){
+        $result.empty();
+        n = parseInt($('#n').val(), 10);
+        t = parseInt($('#t').val(), 10);
+        for (var i = 1; i <= t; i++){
+            $result.append('<h2>X' + i + '</h2>');
+            $result.append(getTable(1, n, 'X' + i));
+
+            for (var j = 0; j < n; j++){
+                var sum = 0;
+                for (var k = 0; k < n; k++){
+                    sum += getFloatValue('X' + (i-1), 0, k) * getFloatValue('A', k, j);
+                }
+                var dec = Math.pow(10, i + 1);
+                setValue('X' + i, 0, j, Math.round(sum * dec) / dec);
+            }
+        }
+    }
+
+    function cl() {
+        $data.empty();
+        $result.empty();
+
+    }
+</script>
+</body>
+</html>

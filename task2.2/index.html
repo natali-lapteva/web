@@ -27,6 +27,8 @@
             k = parseInt($('#k').val(), 10);
         }
         function build() {
+            cl();
+
             setParams();
             $('#data').append('<h2>B</h2>');
             $('#data').append(getTable(n, k, 'B'));
@@ -35,6 +37,8 @@
         }
 
         function calc() {
+            $('#income').empty();
+
             setParams();
             for (var i = 0; i < k; i++){
                 var sum = 0;

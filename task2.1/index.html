@@ -74,6 +74,7 @@
         }
 
         build = function() {
+            cl();
             defineDimentions();
 
             for(var i = 0 ; i < k; i++) {
@@ -83,16 +84,21 @@
         };
 
         calc = function () {
+            clearResalt();
+
             defineDimentions();
 
             sum(n, m, k);
             income(n, m, k);
         };
 
-        cl = function() {
-            $('#data').empty();
+        function clearResalt() {
             $('#sum').empty();
             $('#incomes ').empty();
+        }
+        cl = function() {
+            $('#data').empty();
+            clearResalt();
         }
     </script>
 </body>
