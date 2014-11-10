@@ -1,0 +1,40 @@
+#task {
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 20px;
+    background-color: rgba(185, 250, 253, 0.3);
+    text-align: center;
+    border: inset;
+}
+
+h3 {
+    margin: 5px;
+}
+
+p {
+    margin: 4px;
+    text-indent: 3%;
+}
+
+.data_entry {
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.button {
+    margin: 5px 10px 5px 30px;
+}
+
+#data, #result {
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 20px;
+    background-color: rgba(185, 250, 253, 0.3);
+    text-align: left;
+    border: inset;
+}
+
+#f {
+    margin-left: 10px;
+    font-weight: bold;
+}

@@ -4,7 +4,6 @@
     background-color: rgba(185, 250, 253, 0.3);
     text-align: center;
     border: inset;
-    padding: 30px;
 }
 
 #data, #income{
@@ -35,18 +34,12 @@ li {
 }
 
 .inf {
-    margin-top: 10px;
-    margin-right: 30px;
-    margin-bottom: 10px;
-    margin-left: 30px;
+    margin: 10px 30px;
     font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .knopka {
-    margin-top: 5px;
-    margin-right: 10px;
-    margin-bottom: 5px;
-    margin-left: 30px;
+    margin: 5px 10px 5px 30px;
     font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-align: justify;
 }

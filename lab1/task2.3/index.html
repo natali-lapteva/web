@@ -3,15 +3,32 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Задача 2.3</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div><label for='n'>n = </label><input id='n' value='3'/></div>
-<div><label for='k'>k = </label><input id='k' value='2'/></div>
-<div><label for='p'>p = </label><input id='p' value='3'/></div>
+<div id="task">
+    <h2>Задача 2.3</h2>
+    <h3>Условие:</h3>
+    <p>Нормы затрат ресурсов заданы матрицей <b>A</b>. Объем выпуска каждого из <b>k</b> видов продукции задан матрицей <b>X</b>.
+    Стоимость единиц каждого вида ресурса задана матрицей <b>P</b>.</p>
+    <h3>Определить:</h3>
+    <p>1) полные затраты ресурсов <b>n</b> видов на производство месячной продукции;</p>
+    <p>2) стоимость всех затраченных ресурсов;</p>
+    <h3>Условные обозначения:</h3>
+    <p><b>A</b> - матрица норм затрат ресурсов</p>
+    <p><b>X</b> - вектор-столбец объема выпуска продукции</p>
+    <p><b>P</b> - вектор-строка стоимсти единицы каждого ресурса</p>
+    <p><b>S</b> - матрица полных затрат</p>
+    <p><b>F</b> - итоговая стоимость всех затраченных ресурсов</p>
+</div>
 
-<input type='button' value='Построить диапазоны для ввода данных' onclick='build();'/>
-<input type='button' value='Рассчитать' onclick='calc();'/>
-<input type='button' value='Очистить' onclick='cl();'/>
+<div class="data_entry"><label for='n'>n = </label><input id='n' value='3'/></div>
+<div class="data_entry"><label for='k'>k = </label><input id='k' value='2'/></div>
+<div class="data_entry"><label for='p'>p = </label><input id='p' value='3'/></div>
+
+<input class="button" type='button' value='Построить диапазоны для ввода данных' onclick='build();'/>
+<input class="button" type='button' value='Рассчитать' onclick='calc();'/>
+<input class="button" type='button' value='Очистить' onclick='cl();'/>
 
 <div id='data'></div>
 
@@ -34,11 +51,11 @@
 
         setParam();
         var $data = $('#data');
-        $data.append('<h2>A</h2>');
+        $data.append('<h3>A</h3>');
         $data.append(getTable(n, k, 'A'));
-        $data.append('<h2>X</h2>');
+        $data.append('<h3>X</h3>');
         $data.append(getTable(k, 1, 'X'));
-        $data.append('<h2>P</h2>');
+        $data.append('<h3>P</h3>');
         $data.append(getTable(1, n, 'P'));
     }
 
@@ -49,7 +66,7 @@
 
         var $result = $('#result');
         $result.empty();
-        $result.append('<h2>S</h2>');
+        $result.append('<h3>S</h3>');
         $result.append(getTable(n, 1, 'S'));
 
         var f = 0;
@@ -61,7 +78,7 @@
             setValue('S', i, 0, sum);
             f += sum * getValue('P', 0, i);
         }
-        $result.append('<h2>F</h2><div>' + f + '</div>');
+        $result.append('<h3>F</h3><div id="f">' + f + '</div>');
     }
 
     function cl() {
