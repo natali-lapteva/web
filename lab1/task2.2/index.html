@@ -3,14 +3,30 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Задача 2.2</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div><label for='n'>n = </label><input id='n' value='3'/></div>
-    <div><label for='k'>k = </label><input id='k' value='4'/></div>
+    <div id = 'task'>
+        <h2 id="head">Задача 2.2</h2>
+        <h3>Условие:</h3>
+        <p>Предприятие производит мебель <b>n</b> видов и продает ее в <b>k</b> регионов. Матрица <b>B</b> задает реализацию мебели таким образом, что <b>b<sub>ij</sub></b> - это
+            единица придукции i-го типа, проданная в j-ом регионе.</p>
+        <h3>Определить:</h3>
+        <p>выручку предприятия в каждом регионе</p>
+        <h3>Условные обозначения:</h3>
+            <ul type="">
+                <li><b>A</b> - цена видов мебели за месяц</li>
+                <li><b>B</b> - реализация мебели</li>
+                <li><b>C<sub>i</sub></b> - выручка предприятия в регионе</li>
+            </ul>
+    </div>
 
-    <input type='button' value='Построить диапазоны для ввода данных' onclick='build();'/>
-    <input type='button' value='Рассчитать' onclick='calc();'/>
-    <input type='button' value='Очистить' onclick='cl();'/>
+    <div class="inf"><label for='n'><b>n = </b></label><input id='n' value='3'/></div>
+    <div class="inf"><label for='k'><b>k = </b></label><input id='k' value='4'/></div>
+
+    <input class='knopka' type='button' value='Построить диапазоны для ввода данных' onclick='build();'/>
+    <input class='knopka' type='button' value='Рассчитать' onclick='calc();'/>
+    <input class='knopka' type='button' value='Очистить' onclick='cl();'/>
 
     <div id='data'></div>
 
@@ -30,9 +46,9 @@
             cl();
 
             setParams();
-            $('#data').append('<h2>B</h2>');
+            $('#data').append('<h3>B</h3>');
             $('#data').append(getTable(n, k, 'B'));
-            $('#data').append('<h2>A</h2>');
+            $('#data').append('<h3>A</h3>');
             $('#data').append(getTable(n, 1, 'A'));
         }
 
@@ -45,7 +61,7 @@
                 for (var j = 0; j < n; j++){
                     sum += getValue('B', j, i) * getValue('A', j, 0);
                 }
-                $('#income').append('<span>C' + (i + 1) + ' = ' + sum + ';</span>');
+                $('#income').append('<span id="income_s">C' + '<sub>' + (i + 1) + '</sub>' + ' = ' + sum + ';</span>');
             }
         }
 
