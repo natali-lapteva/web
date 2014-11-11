@@ -1,7 +1,7 @@
 #task {
     font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 20px;
-    background-color: rgba(185, 250, 253, 0.3);
+    background-color: rgba(185, 250, 253, 0.1);
     text-align: center;
     border: inset;
 }
@@ -15,11 +15,10 @@ p {
     text-indent: 3%;
 }
 
-.data_entry {
+.data_entry, .button {
     font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin-left: 30px;
-    margin-bottom: 10px;
     font-weight: bold;
+    margin: 15px 10px 15px 30px;
 }
 
 .button {

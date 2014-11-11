@@ -6,16 +6,38 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div><label for='n'>Количество отраслей </label><input id='n' value='3'/></div>
+<div class="task">
+    <h1><ins>Прямая задача модели Леонтьева</ins></h1>
+    <h2>Задача прогнозирования</h2>
+</div>
+<div class="task">
+    <h2>Постановка задачи</h2>
+    <p>По известной матрице прямых затрат и вектору валовых выпусков найти конечные выпуски отраслей в n-отраслевой модели экономики.</p>
+    <p>Осуществить прогноз развития экономики на следующий год, в предположении, что в течение следующего года произойдет:</p>
+        <ul type="disk">
+            <li>изменение объемов валовых выпусков продукции всех отраслей</li>
+        </ul>
+    <p>Составить таблицы МОБ по базовому и прогнозному годам.</p>
+</div>
 
-<input type='button' value='Ввести данные' onclick='build();'/>
-<input type='button' value='Построить решение' onclick='calc();'/>
-<input type='button' value='Построить решение прогнозного года' onclick='calcForecastYear();'/>
-<input type='button' value='Очистить' onclick='cl();'/>
+<div class="task">
+    <h2>Входные данные</h2>
+    <label for='n'><b>Количество отраслей </b></label><input id='n' value='3'/>
+    <h2>
+        <input class="button" type='button' value='Ввести данные' onclick='build();'/>
+        <input class="button" type='button' value='Построить решение базового года' onclick='calc();'/>
+        <input class="button" type='button' value='Построить решение прогнозного года' onclick='calcForecastYear();'/>
+        <input class="button" type='button' value='Очистить' onclick='cl();'/>
+    </h2>
+    <div id='data'></div>
+</div>
 
-<div id='data'></div>
-<div id='mobBasicYear'></div>
-<div id='mobForecastYear'></div>
+<div class="task">
+    <h2>Выходные данные</h2>
+    <div id='mobBasicYear'></div>
+    <div id='mobForecastYear'></div>
+</div>
+
 
 <script src="../jquery.min.js"></script>
 <script src="../math.js"></script>
@@ -27,11 +49,11 @@
     function build() {
         cl();
         n = parseInt($('#n').val(), 10);
-        $data.append('<h2>Матрица прямых затрат</h2>');
+        $data.append('<h4>Матрица прямых затрат базового года   A = </h4>');
         $data.append(getTable(n, n, 'A'));
-        $data.append('<h2>Вектор валовых выпусков</h2>');
+        $data.append('<h4>Вектор валовых выпусков   X = </h4>');
         $data.append(getTable(n, 1, 'X'));
-        $data.append('<h2>Прогноз</h2>');
+        $data.append('<h4>Прогноз изменения вектора выловых выпусков X<sub>1</sub> = </h4>');
         $data.append(getTable(n, 1, 'alpha'));
     }
 
@@ -42,6 +64,7 @@
             X[i] = getFloatValue('X', i, 0);
         }
         var mob = getMobByX(X, 'mobBasicYear');
+        $mobBasicYear.append('<h4>Таблица Моб базового года</h4>');
         $mobBasicYear.append(mob.getTable());
     }
 
@@ -53,6 +76,7 @@
         }
         var mob = getMobByX(X, 'mobForecastYear');
         console.log(mob);
+        $mobForecastYear.append('<h4>Таблица Моб прогнозного года</h4>');
         $mobForecastYear.append(mob.getTable());
     }
 

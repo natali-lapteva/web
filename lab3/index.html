@@ -6,17 +6,39 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div><label for='n'>Количество отраслей </label><input id='n' value='3'/></div>
+<div class="task">
+    <h1><ins>Обратная задача модели Леонтьева</ins></h1>
+    <h2>Задача прогнозирования</h2>
+</div>
 
-<input type='button' value='Ввести данные' onclick='build();'/>
-<input type='button' value='Построить решение' onclick='calc();'/>
-<input type='button' value='Построить решение прогнозного года' onclick='calcForecastYear();'/>
-<input type='button' value='Очистить' onclick='cl();'/>
+<div class="task">
+   <h2>Постановка задачи</h2>
+    <p>По известной матрице прямых затрат и вектору конечных выпусков для некоторого базового года найти конечные выпуски
+        отраслей в n-отраслевой модели экономики.</p>
+    <p>Осуществить прогноз развития экономики на следующий год, в предположении, что в течение следующего года произойдет:</p>
+    <ul type="disk">
+        <li>изменение объемов конечных выпусков продукции всех отраслей</li>
+    </ul>
+    <p>Составить таблицы МОБ по базовому и прогнозному годам.</p>
+</div>
 
-<div id='data'></div>
-<div id='mobBasicYear'></div>
-<div id='mobForecastYear'></div>
+<div class="task">
+    <h2>Входные данные</h2>
+    <div><label for='n'><b>Количество отраслей </b></label><input id='n' value='3'/></div>
+    <h2>
+        <input class="button" type='button' value='Ввести данные' onclick='build();'/>
+        <input class="button" type='button' value='Построить решение' onclick='calc();'/>
+        <input class="button" type='button' value='Построить решение прогнозного года' onclick='calcForecastYear();'/>
+        <input class="button" type='button' value='Очистить' onclick='cl();'/>
+    </h2>
+    <div id='data'></div>
+</div>
 
+<div class="task">
+    <h2>Выходные данные</h2>
+    <div id='mobBasicYear'></div>
+    <div id='mobForecastYear'></div>
+</div>
 <script src="../jquery.min.js"></script>
 <script src="../math.js"></script>
 <script src="../mob.js"></script>
@@ -28,11 +50,11 @@
     function build() {
         cl();
         n = parseInt($('#n').val(), 10);
-        $data.append('<h2>Матрица прямых затрат</h2>');
+        $data.append('<h4>Матрица прямых затрат базового года   А = </h4>');
         $data.append(getTable(n, n, 'A'));
-        $data.append('<h2>Вектор конечных выпусков</h2>');
+        $data.append('<h4>Вектор конечных выпусков   Y = </h4>');
         $data.append(getTable(n, 1, 'Y'));
-        $data.append('<h2>Прогноз</h2>');
+        $data.append('<h4>Прогноз изменения вектора конечных выпусков Y<sub>1</sub> =</h4>');
         $data.append(getTable(n, 1, 'alpha'));
     }
 
@@ -68,6 +90,7 @@
             Y[i] = getFloatValue('Y', i, 0);
         }
         var mob = getMobByY(Y, 'mobBasicYear');
+        $mobBasicYear.append('<h4>Таблица Моб базового года</h4>');
         $mobBasicYear.append(mob.getTable());
     }
 
@@ -80,6 +103,7 @@
             Y[i] = getFloatValue('Y', i, 0) * getFloatValue('alpha', i, 0);
         }
         var mob = getMobByY(Y, 'mobForecastYear');
+        $mobForecastYear.append('<h4>Таблица Моб прогнозного года</h4>');
         $mobForecastYear.append(mob.getTable());
     }
 
