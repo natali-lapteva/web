@@ -6,12 +6,30 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<div><label for='t'>Количество лет t = </label><input id='t' value='3'/></div>
-<div><label for='n'>n = </label><input id='n' value='3'/></div>
 
-<input type='button' value='Построить' onclick='build();'/>
-<input type='button' value='Рассчитать' onclick='calc();'/>
-<input type='button' value='Очистить' onclick='cl();'/>
+<div id='task'>
+    <h2>Задача 2.4</h2>
+    <h3>Условие:</h3>
+    <p>В ремонтную мастерскую поступают телефонные аппараты 70% которых требуют малого ремонта, 20% - среднего, 10% - сложного.
+        Статистически установлено, что 10% аппаратов, прошедших малый ремонт, через год требуют малого ремонта, 60% - среднего, 30% - сложного.
+        Из аппаратов, прошедших средний ремонт, 20% требуют через год малого ремонта, 50% - среднего, 30% - сложного.
+        Из аппаратов, прошедших сложный ремонт, через год 60% требуют малого ремонта, 40% - среднего.</p>
+    <h3>Определить:</h3>
+    <p>доли из отремонтированных в начале года аппаратов, которые будут требовать ремонта того или иного вида через <b>t</b> лет</p>
+    <h3>Условные обозначения:</h3>
+    <p><b>X<sub>t</sub></b> - матрица данных о работе телефонных аппаратов в определенный момент времени <b>t</b></p>
+    <p><b>A</b> - матрица перехода</p>
+    <p><b>t</b> - количество лет</p>
+    <p><b>n</b> - количество категорий состояния аппаратов</p>
+</div>
+
+<div class='data_entry'><label for='t'>t = </label><input id='t' value='3'/></div>
+<div class='data_entry'><label for='n'>n = </label><input id='n' value='3'/></div>
+
+
+<input class="button" type='button' value='Построить диапазон для ввода данных' onclick='build();'/>
+<input class="button" type='button' value='Рассчитать' onclick='calc();'/>
+<input class="button" type='button' value='Очистить' onclick='cl();'/>
 
 <div id='data'></div>
 
@@ -29,7 +47,7 @@
         cl();
         n = parseInt($('#n').val(), 10);
 
-        $data.append('<h2>X0</h2>');
+        $data.append('<h3>X<sub>0</sub></h3>');
         $data.append(getTable(1, n, 'X0'));
 
         var x0 = getEVector(n);
@@ -37,7 +55,7 @@
             setValue('X0', 0, i, x0[i]);
         }
 
-        $data.append('<h2>A</h2>');
+        $data.append('<h3>A</h3>');
         $data.append(getTable(n, n, 'A'));
 
         for (var i = 0; i < n; i++){
@@ -54,7 +72,7 @@
         n = parseInt($('#n').val(), 10);
         t = parseInt($('#t').val(), 10);
         for (var i = 1; i <= t; i++){
-            $result.append('<h2>X' + i + '</h2>');
+            $result.append('<h3>X' + '<sub>' + i + '</sub>' + '</h3>');
             $result.append(getTable(1, n, 'X' + i));
 
             for (var j = 0; j < n; j++){

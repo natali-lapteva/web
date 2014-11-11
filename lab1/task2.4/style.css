@@ -1,0 +1,27 @@
+#task {
+    border: groove;
+    text-align: center;
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 20px;
+}
+
+h3 {
+    margin: 10px;
+}
+
+p {
+    text-indent: 3%;
+    margin: 10px;
+}
+
+.data_entry, .button{
+    margin: 20px;
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+#data, #result{
+    margin: 20px;
+    border: groove;
+    font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
