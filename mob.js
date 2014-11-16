@@ -44,7 +44,7 @@ MOB.prototype._getValues = function () {
     // Вставляем матрицу A
     for (i = 0; i < n; i++) {
         for (j = 0; j < n; j++) {
-            mob[i + 1][j + 1] = getFloatValue(this.aName, i, j);
+            mob[i + 1][j + 1] = getFloatValue(this.aName, i, j) * X[j];
         }
     }
 

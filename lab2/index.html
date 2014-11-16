@@ -51,6 +51,12 @@
         n = parseInt($('#n').val(), 10);
         $data.append('<h4>Матрица прямых затрат базового года   A = </h4>');
         $data.append(getTable(n, n, 'A'));
+        for(var i = 0 ; i < n; i++) {
+            for(var j = 0 ; j < n ; j++) {
+                var value = Math.random().toFixed(2);
+                setValue('A', i, j, value);
+            }
+        }
         $data.append('<h4>Вектор валовых выпусков   X = </h4>');
         $data.append(getTable(n, 1, 'X'));
         $data.append('<h4>Прогноз изменения вектора выловых выпусков X<sub>1</sub> = </h4>');
