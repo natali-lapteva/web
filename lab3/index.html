@@ -49,10 +49,11 @@
 
     function build() {
         cl();
+        var i;
         n = parseInt($('#n').val(), 10);
         $data.append('<h4>Матрица прямых затрат базового года   А = </h4>');
         $data.append(getTable(n, n, 'A'));
-        for(var i = 0 ; i < n; i++) {
+        for(i = 0 ; i < n; i++) {
             for(var j = 0 ; j < n ; j++) {
                 var value = Math.random().toFixed(2);
                 setValue('A', i, j, value);
@@ -62,6 +63,10 @@
         $data.append(getTable(n, 1, 'Y'));
         $data.append('<h4>Прогноз изменения вектора конечных выпусков Y<sub>1</sub> =</h4>');
         $data.append(getTable(n, 1, 'alpha'));
+        for(i = 0; i < n; i++) {
+            var percent = Math.round(Math.random() * 4 + 1) * 10;
+            setValue('alpha', i, 0, percent);
+        }
     }
 
     function getMobByY(Y, id) {
@@ -106,7 +111,7 @@
 
         var Y = [], i;
         for (i = 0; i < n; i++) {
-            Y[i] = getFloatValue('Y', i, 0) * getFloatValue('alpha', i, 0);
+            Y[i] = getFloatValue('Y', i, 0) * (getFloatValue('alpha', i, 0) / 100 + 1);
         }
         var mob = getMobByY(Y, 'mobForecastYear');
         $mobForecastYear.append('<h4>Таблица Моб прогнозного года</h4>');

@@ -8,7 +8,7 @@ function MOB(n, aName, X, Y, id) {
 
 MOB.prototype.getTable = function () {
     var mobValues = this._getValues();
-    return this._build(mobValues);
+    return this._build(mobValues) + this._checkBalance(mobValues);
 };
 
 MOB.prototype._getValues = function () {
@@ -29,13 +29,13 @@ MOB.prototype._getValues = function () {
 
     // Заголовок таблицы
     mob[0][0] = '';
-    mob[0][n + 1] = 'Сумма';
-    mob[0][n + 2] = 'Вектор конечных выпусков';
-    mob[0][n + 3] = 'Вектор валовых выпусков';
+    mob[0][n + 1] = 'Сумма <b>Σ</b>';
+    mob[0][n + 2] = 'Вектор конечных выпусков <b>Y</b>';
+    mob[0][n + 3] = 'Вектор валовых выпусков <b>X</b>';
 
-    mob[n + 1][0] = 'Совокупный потребленный продукт';
-    mob[n + 2][0] = 'Совокупный доход экономической системы';
-    mob[n + 3][0] = 'X с чертой';
+    mob[n + 1][0] = 'Совокупный потребленный продукт <b>Σ</b>';
+    mob[n + 2][0] = 'Объем условно чистой продукции <b>Ṽ</b>';
+    mob[n + 3][0] = 'Совокупный доход экономической системы <b>X</b>';
 
     for (i = 1; i < n + 1; i++) {
         mob[i][0] = mob[0][i] = 'Отрасль ' + i
@@ -86,7 +86,7 @@ MOB.prototype._getValues = function () {
     return mob;
 };
 
-MOB.prototype._build = function(mob) {
+MOB.prototype._build = function (mob) {
     var table = [];
 
     table.push('<table id="' + this.id + '_table">');
@@ -107,3 +107,68 @@ MOB.prototype._build = function(mob) {
 
     return table.join('\n');
 };
+
+MOB.prototype._checkBalance = function (mob) {
+    var check = [],
+        n = this.n,
+        i,
+        text;
+    // Сумма сумм по столбцам равна сумме сумм по строкам
+    check.push('<h3>1. Совокупный промежуточный продукт, произведенный в системе</h3>');
+    var sumByRow = [],
+        sumByColun = [],
+        sigma_1 = Math.round(mob[n + 1][n + 1] * 1000 ) / 1000;
+
+    for (i = 0; i < n; i++) {
+        sumByRow.push(this._roundAndFormat(mob[i + 1][n + 1]));
+        sumByColun.push(this._roundAndFormat(mob[n + 1][i + 1]));
+    }
+    text = sumByRow.join(' ') + ' = ' + sumByColun.join(' ') + ' = ' + sigma_1;
+    check.push('<div>' + text + '</div>');
+
+    // Сумма сумм и Y равна X
+    check.push('<h3>2. Баланс между валовым продуктом, произведенным в отраслях и промежуточным и конечным продуктом</h3>');
+    for (i = 0; i < n; i++) {
+        text =
+            this._roundAndFormat(mob[i + 1][n + 1]) + ' ' +
+            this._roundAndFormat(mob[i + 1][n + 2]) + ' = ' +
+            (Math.round(mob[i + 1][n + 3] * 1000) / 1000);
+        check.push('<div>' + text + '</div>');
+    }
+
+    // Сумма сум по столбцам и V_с_чертой равна X_с_чертой
+    check.push('<h3>3. Сумма сум по столбцам и V_с_чертой равна X_с_чертой</h3>');
+    for (i = 0; i < n; i++) {
+        text =
+            this._roundAndFormat(mob[n + 1][i + 1]) + ' ' +
+            this._roundAndFormat(mob[n + 2][i + 1]) + ' = ' +
+            (Math.round(mob[n + 3][i + 1] * 1000) / 1000);
+        check.push('<div>' + text + '</div>');
+    }
+
+    // Сумма по V_с_чертой равна сумме по Y
+    check.push('<h3>4. Сумма по V_с_чертой равна сумме по Y</h3>');
+    var sumByV = [],
+        sumByY = [],
+        sigma_2 = Math.round(mob[n + 2][n + 2] * 1000) / 1000 ;
+
+    for (i = 0; i < n; i++) {
+        sumByY.push(this._roundAndFormat(mob[i + 1][n + 2]));
+        sumByV.push(this._roundAndFormat(mob[n + 2][i + 1]));
+    }
+    text = sumByY.join(' ') + ' = ' + sumByV.join(' ') + ' = ' + sigma_2;
+    check.push('<div>' + text + '</div>');
+
+    // Сигма_1 + сигма_2 = сигма_3
+    var sigma_3 = Math.round(mob[n+3][n+3] * 1000) /1000;
+    check.push('<h3>5. Сумма совокупного продукта экономики</h3>');
+    check.push(sigma_1 + ' + ' + sigma_2 + ' = ' + sigma_3);
+
+    return check.join('\n');
+};
+
+MOB.prototype._roundAndFormat = function (data) {
+    var value = Math.round(data * 1000) / 1000;
+    return (value > 0 ? '+' : '') + value;
+};
+
