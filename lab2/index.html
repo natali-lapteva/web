@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Прямая задача</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" href="http://www.aup.ru/articles/economics/12.files/image040.gif"/>
 </head>
 <body>
 <div class="task">
@@ -34,8 +35,8 @@
 
 <div class="task">
     <h2>Выходные данные</h2>
-    <div id='mobBasicYear'></div>
-    <div id='mobForecastYear'></div>
+    <div id='mobBasicYear' align="center"></div>
+    <div id='mobForecastYear' align="center"></div>
 </div>
 
 
@@ -50,7 +51,7 @@
         var i;
         cl();
         n = parseInt($('#n').val(), 10);
-        $data.append('<h4>Матрица прямых затрат базового года   A = </h4>');
+        $data.append('<div class="given">Матрица прямых затрат базового года   A = </div>');
         $data.append(getTable(n, n, 'A'));
         for(i = 0 ; i < n; i++) {
             for(var j = 0 ; j < n ; j++) {
@@ -58,9 +59,9 @@
                 setValue('A', i, j, value);
             }
         }
-        $data.append('<h4>Вектор валовых выпусков   X = </h4>');
+        $data.append('<div class="given">Вектор валовых выпусков   X = </div>');
         $data.append(getTable(n, 1, 'X'));
-        $data.append('<h4>Прогноз изменения вектора выловых выпусков в процентах X<sub>1</sub> = </h4>');
+        $data.append('<div class="given">Прогноз изменения вектора выловых выпусков в процентах X<sub>1</sub> =</div>');
         $data.append(getTable(n, 1, 'alpha'));
         for(i = 0; i < n; i++) {
             var percent = Math.round(Math.random() * 4 + 1) * 10;

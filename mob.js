@@ -114,7 +114,7 @@ MOB.prototype._checkBalance = function (mob) {
         i,
         text;
     // Сумма сумм по столбцам равна сумме сумм по строкам
-    check.push('<h3>1. Совокупный промежуточный продукт, произведенный в системе</h3>');
+    check.push('<h4>1. Совокупный промежуточный продукт, произведенный в системе, равен совокупному промежуточному продукту, потребленному в системе</h4>');
     var sumByRow = [],
         sumByColun = [],
         sigma_1 = Math.round(mob[n + 1][n + 1] * 1000 ) / 1000;
@@ -127,7 +127,7 @@ MOB.prototype._checkBalance = function (mob) {
     check.push('<div>' + text + '</div>');
 
     // Сумма сумм и Y равна X
-    check.push('<h3>2. Баланс между валовым продуктом, произведенным в отраслях и промежуточным и конечным продуктом</h3>');
+    check.push('<h4>2. Баланс между валовым продуктом, произведенным в отраслях и промежуточным и конечным продуктом</h4>');
     for (i = 0; i < n; i++) {
         text =
             this._roundAndFormat(mob[i + 1][n + 1]) + ' ' +
@@ -137,7 +137,7 @@ MOB.prototype._checkBalance = function (mob) {
     }
 
     // Сумма сум по столбцам и V_с_чертой равна X_с_чертой
-    check.push('<h3>3. Сумма сум по столбцам и V_с_чертой равна X_с_чертой</h3>');
+    check.push('<h4>3. Сумма сум по столбцам и V_с_чертой равна X_с_чертой</h4>');
     for (i = 0; i < n; i++) {
         text =
             this._roundAndFormat(mob[n + 1][i + 1]) + ' ' +
@@ -147,7 +147,7 @@ MOB.prototype._checkBalance = function (mob) {
     }
 
     // Сумма по V_с_чертой равна сумме по Y
-    check.push('<h3>4. Сумма по V_с_чертой равна сумме по Y</h3>');
+    check.push('<h4>4. Сумма по V_с_чертой равна сумме по Y</h4>');
     var sumByV = [],
         sumByY = [],
         sigma_2 = Math.round(mob[n + 2][n + 2] * 1000) / 1000 ;
@@ -161,7 +161,7 @@ MOB.prototype._checkBalance = function (mob) {
 
     // Сигма_1 + сигма_2 = сигма_3
     var sigma_3 = Math.round(mob[n+3][n+3] * 1000) /1000;
-    check.push('<h3>5. Сумма совокупного продукта экономики</h3>');
+    check.push('<h4>5. Сумма совокупного продукта экономики</h4>');
     check.push(sigma_1 + ' + ' + sigma_2 + ' = ' + sigma_3);
 
     return check.join('\n');

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Смешанная задача</title>
+    <link rel="icon" href="http://www.aup.ru/articles/economics/12.files/image040.gif"/>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            margin: 10px;
+        }
+        .title {
+            text-align: center;
+            text-decoration: underline;
+        }
+        p {
+            text-align: center;
+            font-weight: bold;
+            margin: 5px;
+        }
+        .mission {
+            border: 2px inset;
+            padding: 10px;
+            text-align: left;
+            text-indent: 5%;
+        }
+        .enter {
+            text-align: center;
+            border: 2px inset;
+            margin-top: 10px;
+            padding: 10px 10px 5px;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            font-weight: bold;
+        }
+        #data {
+            border: 2px inset;
+            margin-top: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        .given {
+            font-weight: bold;
+            padding-left: 20px;
+            display: inline-block;
+            /*border: solid;*/
+        }
+        #vectors {
+            border: 2px inset;
+            margin-top: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        #mob {
+            border: 2px inset;
+            margin-top: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+        #mob table {
+            text-align: center;
+        }
+        #mob th {
+            text-align: left; /* Выравнивание по левому краю */
+            background: #ccc; /* Цвет фона ячеек */
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+        #mob td {
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+        table {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+<div class="title"><h1>Смешанная задача модели Леонтьева</h1></div>
+<div class="mission">
+    <p>Постановка задачи</p>
+По известной матрице прямых затрат и частично заданным векторам валовых и конечных выпусков построить таблицу МОБ.
+    <p>Условные обозначения</p>
+A – матрица прямых затрат
+    <br/>МОБ – межотраслевой баланс
+    <br/>Y – вектор конечных выпусков
+    <br/>X – вектор валовых выпусков
+    <br/>n - количество отраслей экономики
+    <p class="notes">Примечания</p>
+<span class="notes">Подразумевается, что количество отраслей для модели экономики - четное число.</span>
+</div>
+<div class="enter">
+    <label for='n'><b>Количество отраслей </b></label><input id='n' value='4' size="2" maxlength="2"/>
+    <div>
+        <input class="button" type='button' value='Ввести данные' onclick='build();'/>
+        <input class="button" type='button' value='Построить решение' onclick='calc();'/>
+        <input class="button" type='button' value='Очистить' onclick='cl();'/>
+    </div>
+</div>
+
+<div id='data'></div>
+<div id="vectors"></div>
+<div id="mob"></div>
+
+<script src="../jquery.min.js"></script>
+<script src="../math.js"></script>
+<script src="../mob.js"></script>
+<script src="../sylvester.src.js"></script>
+<script>
+    var $data = $('#data'),
+            $vectors = $('#vectors'),
+            $mob = $('#mob');
+
+    function build() {
+        cl();
+        var n = parseInt($('#n').val(), 10),
+                i,
+                j;
+        $data.append('<div class="given">Матрица A = </div>');
+        $data.append(getTable(n, n, 'A'));
+        for (i = 0; i < n; i++) {
+            var vector = [],
+                    sum = 0;
+            for (j = 0; j < n; j++) {
+                var value = Math.random();
+                vector.push(value);
+                sum += value;
+            }
+            sum += Math.random();
+
+            for (j = 0; j < n; j++) {
+                setValue('A', j, i, Math.round(vector[j] / sum * 10) / 10);
+            }
+        }
+
+        $data.append('<div class="given">X<sub>2</sub> = </div>');
+        $data.append(getTable(n / 2, 1, 'X2'));
+
+        $data.append('<div class="given">Y<sub>1</sub> = </div>');
+        $data.append(getTable(n / 2, 1, 'Y1'));
+
+        for (i = 0; i < n / 2; i++) {
+            setValue('X2', i, 0, getValue('X2', i, 0) * 100);
+            setValue('Y1', i, 0, getValue('Y1', i, 0) * 100);
+        }
+    }
+
+    function calc() {
+        $vectors.empty();
+        var n = parseInt($('#n').val(), 10),
+                i,
+                j;
+
+        // Получаем матрицу (E - A_11) ^ -1
+        var eDivA11 = [];
+        for (i = 0; i < n / 2; i++) {
+            eDivA11[i] = [];
+            for (j = 0; j < n / 2; j++) {
+                eDivA11[i][j] = (i === j ? 1 : 0) - getFloatValue('A', i, j);
+            }
+        }
+        var inverseOfEDivA11 = Matrix.create(eDivA11).inverse();
+
+        // Получаем матрицу (Y_1 + A_12*X2)
+        var Y1_add_A12_mul_X2 = [];
+        for (i = 0; i < n / 2; i++) {
+            Y1_add_A12_mul_X2[i] = getFloatValue('Y1', i, 0);
+            for (j = 0; j < n / 2; j++) {
+                Y1_add_A12_mul_X2[i] += getFloatValue('A', i, j + n / 2) * getFloatValue('X2', j, 0);
+            }
+        }
+
+        // Перемножаем полученные матрицы
+        var X1 = [];
+        for (i = 0; i < n / 2; i++) {
+            X1[i] = 0;
+            for (j = 0; j < n / 2; j++) {
+                X1[i] += inverseOfEDivA11.e(i + 1, j + 1) * Y1_add_A12_mul_X2[j];
+            }
+        }
+
+        // Выводим X
+        $vectors.append('<div class="given">X = </div>');
+        $vectors.append(getTable(n, 1, 'X'));
+        for (i = 0; i < n / 2; i++) {
+            setValue('X', i, 0, Math.round(X1[i] * 10) / 10);
+            setValue('X', i + n / 2, 0, getValue('X2', i, 0));
+        }
+
+        var Y2 = [];
+        for (i = 0; i < n / 2; i++) {
+            Y2[i] = 0;
+            for (j = 0; j < n / 2; j++) {
+                Y2[i] +=
+                    // Находим (E - A_22) * X2
+                        ((i === j ? 1 : 0) - getFloatValue('A', i + n / 2, j + n / 2)) * getValue('X2', j, 0) -
+                            // A_21 * X_1
+                        getFloatValue('A', i + n / 2, j) * X1[j];
+
+            }
+        }
+
+        $vectors.append('<div class="given">Y = </div>');
+        $vectors.append(getTable(n, 1, 'Y'));
+        for (i = 0; i < n / 2; i++) {
+            setValue('Y', i, 0, getValue('Y1', i, 0));
+            setValue('Y', i + n / 2, 0, Math.round(Y2[i] * 10) / 10);
+        }
+
+        var X = [], Y = [];
+        for (i = 0; i < n; i++) {
+            X[i] = getFloatValue('X', i, 0);
+            Y[i] = getFloatValue('Y', i, 0);
+        }
+
+        var mob = new MOB(n, 'A', X, Y, 'mob');
+        $mob.append('<div class="given">Таблица МОБ</div>');
+        $mob.append(mob.getTable());
+    }
+
+
+    function cl() {
+        $data.empty();
+        $vectors.empty();
+        $mob.empty();
+    }
+</script>
+</body>
+</html>
