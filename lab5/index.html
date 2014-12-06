@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Задача учета ресурсов</title>
+</head>
+<body>
+<div class="title">Задача учета ресурсов</div>
+<div class="task"></div>
+
+<label for="number">Количество цехов предприятия</label><input id="number" type="text" value="3">
+<input type="button" value="Ввести данные" onclick="getData()">
+<input type="button" value="Рассчитать" onclick="calc()">
+<input type="button" value="Построить таблицу МОБ" onclick="build()">
+<input type="button" value="Очистить" onclick="cl()">
+
+<div id="data"></div>
+<div id="result"></div>
+<div id="mob"></div>
+
+<script src="../jquery.min.js"></script>
+<script src="../sylvester.src.js"></script>
+<script src="../math.js"></script>
+<script src="../mob.js"></script>
+
+<script>
+    var $data = $('#data'),
+            $result = $('#result'),
+            $mob = $('#mob');
+
+    function getData() {
+        cl();
+
+        var n = parseInt($('#number').val(), 10),
+                i,
+                j;
+
+        // Добавляем матрицу прямых затрат (А)
+        // и вектор продукции на реализацию (Y)
+        $data.append('<h2>Нормы прямых затрат цехов</h2>');
+        var table1 = '<table>' +
+                '<tr>' +
+                '<td> </td>';
+        for (i = 1; i < n + 1; i++) {
+            table1 += '<td>Цех ' + i + '</td>';
+        }
+        table1 += '<td>Продукция на реализацию</td>'
+        table1 += '</tr>';
+
+        for (i = 0; i < n; i++) {
+            table1 += '<tr><td>Цех ' + (i + 1) + '</td>';
+            if (i === 0) {
+                table1 += '<td rowspan="' + n + '" colspan="' + n + '">' + getTable(n, n, 'A') + '</td>';
+                table1 += '<td rowspan="' + n + '">' + getTable(n, 1, 'Y') + '</td>';
+            }
+            table1 += '</tr>';
+        }
+        table1 += '</table>';
+        $data.append(table1);
+
+        // Вычисление значений для матрицы A и Y
+        for (i = 0; i < n; i++) {
+            // Вычисление значений для таблицы A
+            var values = [],
+                    sum = Math.random();
+            for (j = 0; j < n; j++) {
+                sum += values[j] = Math.random();
+            }
+
+            // Задание новых значений в таблицу A
+            for (j = 0; j < n; j++) {
+                setValue('A', j, i, Math.round(values[j] / sum * 10) / 10);
+            }
+
+            // Вычисление новых значений для таблицы Y
+            setValue('Y', i, 0, Math.round(Math.random() * 9 + 1) * 100);
+        }
+
+        // Добавляем таблицу расходных норм ресурсов
+        $data.append('<h2>Расходные нормы ресурсов</h2>');
+        $data.append(_getStandardsResources(n, 'N', 'P', 'Стоимость единицы ресурсов'));
+
+        // Устанавливаем значения матрицы N и P
+        for (i = 0; i < 4; i++) {
+            for (j = 0; j < n; j++) {
+                setValue('N', i, j, Math.round(Math.random() * 90) / 10 + 1);
+            }
+            setValue('P', i, 0, Math.round(Math.random() * 99 + 1));
+        }
+
+    }
+
+    function calc() {
+        $result.empty();
+
+        var n = parseInt($('#number').val(), 10),
+                X = _getX(n),
+                i, j;
+
+        // Строим таблицу расхода ресурсов по цехам
+        $result.append('<h2>Расход ресурсов по цехам</h2>');
+        $result.append(_getStandardsResources(n, 'RR', 'RRSum', 'Сумма по строкам'));
+
+        for (i = 0; i < 4; i++) {
+            var rowSum = 0;
+            for (j = 0; j < n; j++) {
+                var value = Math.round(getFloatValue('N', i, j) * X[j] * 100) / 100;
+                rowSum += value;
+                setValue('RR', i, j, value);
+            }
+            setValue('RRSum', i, 0, Math.round(rowSum * 100) / 100);
+        }
+
+        // Строим таблицу количества ресурсов на единицу выпуска конечной продукции
+        // каждого цеха
+        $result.append('<h2>Количество ресурсов на единицу выпуска конечной продукции каждого цеха</h2>');
+        $result.append(_getStandardsResources(n, 'noName1', 'noName1sum', 'Сумма по строкам'));
+        var EDivAInverse = _getEDivAInverse(n);
+        for (i = 0; i < 4; i++) {
+            var rowSum = 0;
+            for (j = 0; j < n; j++) {
+                var sum = 0;
+                for (var k = 0; k < n; k++) {
+                    sum += getFloatValue('N', i, k) * EDivAInverse.e(k + 1, j + 1);
+                }
+                rowSum += sum;
+                setValue('noName1', i, j,  Math.round(sum * 100) / 100);
+            }
+            setValue('noName1sum', i, 0, Math.round(rowSum * 100) / 100);
+        }
+
+        // Строим таблицу производственных затрат по цехам на всю производственную программу
+        $result.append('<h2>Производственные затраты по цехам на всю производственную программу</h2>');
+        $result.append(_getOneRowTable(n, 'noName2', 'noName2Sum'));
+
+        var rowSum = 0;
+        for (i = 0; i < n; i++) {
+            var sum = 0;
+            for (j = 0; j < 4; j++) {
+                sum += getFloatValue('P', j, 0) * getFloatValue('RR', j, i);
+            }
+            rowSum += sum;
+            setValue('noName2', 0, i, Math.round(sum * 100) / 100);
+        }
+        $('#noName2Sum').val(Math.round(rowSum * 100) / 100);
+
+        // Вычисление стоимостных затрат на единицу конечной продукции
+        $result.append('<h2>Стоимостные затраты на единицу конечной продукции</h2>');
+        $result.append(_getOneRowTable(n, 'noName3', 'noName3Sum'));
+
+        var PdivN = [];
+        for (i = 0; i < n; i++) {
+            PdivN[i] = 0;
+            for (j = 0; j < 4; j++) {
+                PdivN[i] += getFloatValue('P', j, 0) * getFloatValue('N', j, i);
+            }
+        }
+
+        rowSum = 0;
+        for (i = 0; i < n; i++) {
+            var sum = 0;
+            for (j = 0; j < n; j++) {
+                sum += PdivN[j] * EDivAInverse.e(j + 1, i + 1);
+            }
+            rowSum += sum;
+            setValue('noName3', 0, i, Math.round(sum * 100) / 100);
+        }
+        $('#noName3Sum').val(Math.round(rowSum * 100)/ 100);
+    }
+
+    function build() {
+        var n = parseInt($('#number').val(), 10);
+        var X = _getX(n), Y = [];
+        for (var i = 0; i < n; i++) {
+            Y[i] = getFloatValue('Y', i, 0);
+        }
+
+        var mob = new MOB(n, 'A', X, Y, 'mob');
+        $mob.append('<h2>Таблица МОБ</h2>');
+        $mob.append(mob.getTable());
+    }
+
+    function _getStandardsResources(n, table1, table2, table2Title) {
+        var table = '<table>';
+        // Первая строка с заголовками
+        table += '<tr>' +
+        '<td> </td>';
+        for (i = 1; i < n + 1; i++) {
+            table += '<td>Цех ' + i + '</td>';
+        }
+        table += '<td>' + table2Title + '</td>'
+        table += '</tr>';
+
+        table += '<tr><td>Сырье 1</td>';
+        table += '<td rowspan="4" colspan="' + n + '">' + getTable(4, n, table1) + '</td>';
+        table += '<td rowspan="4">' + getTable(4, 1, table2) + '</td></tr>';
+
+        table += '<tr><td>Сырье 2</td></tr>';
+        table += '<tr><td>Топливо</td></tr>';
+        table += '<tr><td>Трудоемкость</td></tr>';
+        table += '</table>';
+
+        return table;
+    }
+
+    function _getOneRowTable(n, tableName, sumName) {
+        var table = '<table>' +
+                '<tr>';
+        for (var i = 1; i < n + 1; i++) {
+            table += '<td>Цех ' + i + '</td>';
+        }
+        table += '<td>Сумма по строке</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td colspan="' + n + '">' + getTable(1, n, tableName) + '</td>' +
+        '<td><input id="' + sumName + '" /></td>' +
+        '</tr>' +
+        '</table>';
+
+        return table;
+    }
+
+    function _getX(n) {
+        var inverseOfEDivA = _getEDivAInverse(n),
+                X = [],
+                i,
+                j;
+
+        for (i = 0; i < n; i++) {
+            X[i] = 0;
+            for (j = 0; j < n; j++) {
+                X[i] += inverseOfEDivA.e(i + 1, j + 1) * getFloatValue('Y', j, 0);
+            }
+        }
+
+        return X;
+    }
+
+    function _getEDivAInverse(n) {
+        var i, j, eDivA = [];
+
+        for (i = 0; i < n; i++) {
+            eDivA[i] = [];
+
+            for (j = 0; j < n; j++) {
+                eDivA[i][j] = (i === j ? 1 : 0) - getFloatValue('A', i, j);
+            }
+        }
+
+        return Matrix.create(eDivA).inverse();
+    }
+
+    function cl() {
+        $data.empty();
+        $result.empty();
+        $mob.empty();
+    }
+</script>
+
+</body>
+</html>

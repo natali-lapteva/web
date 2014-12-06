@@ -19,7 +19,7 @@ function getTable(row, column, matrixName) {
         }
         t.push('</tr>');
     }
-    t.push('<table>');
+    t.push('</table>');
     return t.join('\n');
 }
 
