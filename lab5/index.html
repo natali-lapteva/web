@@ -3,16 +3,90 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Задача учета ресурсов</title>
+    <link rel="icon" href="http://www.aup.ru/articles/economics/12.files/image040.gif"/>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+        }
+        .title {
+            text-decoration: underline;
+            text-align: center;
+        }
+        h3 {
+            text-align: center;
+            margin: 10px;
+        }
+        .task, #data, #result, #mob {
+            padding: 20px;
+            border: 1px solid #cccccc;
+            margin-top: 10px;
+        }
+        #mob {text-align: center}
+        .enter {
+            border: 1px solid #cccccc;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .button {
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        ol, ul {
+            margin: 10px;
+        }
+        #mob table {
+            text-align: center;
+            border: 1px solid;
+        }
+        #mob th {
+            text-align: left; /* Выравнивание по левому краю */
+            background: #ccc; /* Цвет фона ячеек */
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+        #mob td {
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+        h4 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div class="title">Задача учета ресурсов</div>
-<div class="task"></div>
-
-<label for="number">Количество цехов предприятия</label><input id="number" type="text" value="3">
-<input type="button" value="Ввести данные" onclick="getData()">
-<input type="button" value="Рассчитать" onclick="calc()">
-<input type="button" value="Построить таблицу МОБ" onclick="build()">
-<input type="button" value="Очистить" onclick="cl()">
+<h1 class="title">Задача учета ресурсов</h1>
+<div class="task">
+    <h3>Постановка задачи</h3>
+    <p>Предприятие состоит из n цехов, выпускающих каждый по одному виду продукции. По входным данным произвести необходимые рассчеты.</p>
+    <h3>Входные данные</h3>
+    <p>2 таблицы:</p>
+    <ol>
+        <li>Нормы прямых затрат продуктов, используемых в качестве промежуточного продукта для выпуска единица продукта для каждого цеха. А так же
+        количество продукции этих цехов, предназначенное для реализации.</li>
+        <li>Расходные нормы ресурсов на одну единицу продукции.</li>
+    </ol>
+    <h3>Определить</h3>
+    <ul>
+        <li>Матрицу коэффициентов полных затрат</li>
+        <li>Валовые выпуски цехов</li>
+        <li>Суммарный расход ресурсов на выполнение производственной программы</li>
+        <li>Затраты ресурсов на единицу продукции каждого цеха</li>
+        <li>Расход ресурсов по цехам</li>
+        <li>Производственные затрат (в руб.) по цехам и на всю производственную программу</li>
+        <li>Стоимостные затраты (в руб.) на единицу продукта</li>
+    </ul>
+</div>
+<div class="enter">
+<label for="number">Количество цехов предприятия n </label><input id="number" type="text" value="3" maxlength="2" size="2">
+<br/>
+<input class="button" type="button" value="Ввести данные" onclick="getData()">
+<input class="button" type="button" value="Рассчитать" onclick="calc()">
+<input class="button" type="button" value="Построить таблицу МОБ" onclick="build()">
+<input class="button" type="button" value="Очистить" onclick="cl()">
+</div>
 
 <div id="data"></div>
 <div id="result"></div>
@@ -37,7 +111,7 @@
 
         // Добавляем матрицу прямых затрат (А)
         // и вектор продукции на реализацию (Y)
-        $data.append('<h2>Нормы прямых затрат цехов</h2>');
+        $data.append('<h3>Нормы прямых затрат цехов</h3>');
         var table1 = '<table>' +
                 '<tr>' +
                 '<td> </td>';
@@ -77,7 +151,7 @@
         }
 
         // Добавляем таблицу расходных норм ресурсов
-        $data.append('<h2>Расходные нормы ресурсов</h2>');
+        $data.append("<h3>Расходные нормы ресурсов</h3>");
         $data.append(_getStandardsResources(n, 'N', 'P', 'Стоимость единицы ресурсов'));
 
         // Устанавливаем значения матрицы N и P
@@ -98,8 +172,8 @@
                 i, j;
 
         // Строим таблицу расхода ресурсов по цехам
-        $result.append('<h2>Расход ресурсов по цехам</h2>');
-        $result.append(_getStandardsResources(n, 'RR', 'RRSum', 'Сумма по строкам'));
+        $result.append('<h3>Расход ресурсов по цехам</h3>');
+        $result.append(_getStandardsResources(n, 'RR', 'RRSum', 'Затраты ресурсов на валовые выпуски'));
 
         for (i = 0; i < 4; i++) {
             var rowSum = 0;
@@ -113,8 +187,8 @@
 
         // Строим таблицу количества ресурсов на единицу выпуска конечной продукции
         // каждого цеха
-        $result.append('<h2>Количество ресурсов на единицу выпуска конечной продукции каждого цеха</h2>');
-        $result.append(_getStandardsResources(n, 'noName1', 'noName1sum', 'Сумма по строкам'));
+        $result.append('<h3>Количество ресурсов на единицу выпуска конечной продукции каждого цеха</h3>');
+        $result.append(_getStandardsResources(n, 'noName1', 'noName1sum', 'Сумма по строке'));
         var EDivAInverse = _getEDivAInverse(n);
         for (i = 0; i < 4; i++) {
             var rowSum = 0;
@@ -130,7 +204,7 @@
         }
 
         // Строим таблицу производственных затрат по цехам на всю производственную программу
-        $result.append('<h2>Производственные затраты по цехам на всю производственную программу</h2>');
+        $result.append("<h3>Производственные затраты по цехам на всю производственную программу</h3>");
         $result.append(_getOneRowTable(n, 'noName2', 'noName2Sum'));
 
         var rowSum = 0;
@@ -145,7 +219,7 @@
         $('#noName2Sum').val(Math.round(rowSum * 100) / 100);
 
         // Вычисление стоимостных затрат на единицу конечной продукции
-        $result.append('<h2>Стоимостные затраты на единицу конечной продукции</h2>');
+        $result.append('<h3>Стоимостные затраты на единицу конечной продукции</h3>');
         $result.append(_getOneRowTable(n, 'noName3', 'noName3Sum'));
 
         var PdivN = [];
@@ -176,7 +250,7 @@
         }
 
         var mob = new MOB(n, 'A', X, Y, 'mob');
-        $mob.append('<h2>Таблица МОБ</h2>');
+        $mob.append("<h3>Таблица МОБ</h3>");
         $mob.append(mob.getTable());
     }
 
@@ -209,7 +283,7 @@
         for (var i = 1; i < n + 1; i++) {
             table += '<td>Цех ' + i + '</td>';
         }
-        table += '<td>Сумма по строке</td>' +
+        table += '<td>Весь завод (руб.)</td>' +
         '</tr>' +
         '<tr>' +
         '<td colspan="' + n + '">' + getTable(1, n, tableName) + '</td>' +

@@ -15,7 +15,7 @@ function getTable(row, column, matrixName) {
         for (var j = 0; j < column; j++) {
             var id = matrixName +'_' + i + '_' + j,
                 value = Math.round(Math.random() * 10); // генерируемые числа для начальных диапазонов
-            t.push('<td><input id="'+ id + '" value= "' + value + '" size="2"/></td>');
+            t.push('<td><input id="'+ id + '" value= "' + value + '" size="8"/></td>');
         }
         t.push('</tr>');
     }

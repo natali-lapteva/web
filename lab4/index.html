@@ -9,91 +9,108 @@
             font-family: "Segoe UI", sans-serif;
             margin: 10px;
         }
+
         .title {
             text-align: center;
             text-decoration: underline;
         }
+
         p {
-            text-align: center;
-            font-weight: bold;
+            text-align: left;
             margin: 5px;
         }
+
         .mission {
             border: 2px inset;
             padding: 10px;
             text-align: left;
             text-indent: 5%;
         }
+
         .enter {
             text-align: center;
             border: 2px inset;
             margin-top: 10px;
             padding: 10px 10px 5px;
         }
+
         .button {
             display: inline-block;
             margin: 10px;
             font-weight: bold;
         }
+
         #data {
             border: 2px inset;
             margin-top: 10px;
             padding: 10px;
             text-align: center;
         }
+
         .given {
             font-weight: bold;
             padding-left: 20px;
             display: inline-block;
-            /*border: solid;*/
         }
+
         #vectors {
             border: 2px inset;
             margin-top: 10px;
             padding: 10px;
             text-align: center;
         }
+
         #mob {
             border: 2px inset;
             margin-top: 10px;
             padding: 10px;
             text-align: center;
         }
+
         #mob table {
             text-align: center;
         }
+
         #mob th {
             text-align: left; /* Выравнивание по левому краю */
             background: #ccc; /* Цвет фона ячеек */
             padding: 5px; /* Поля вокруг содержимого ячеек */
             border: 1px solid black; /* Граница вокруг ячеек */
         }
+
         #mob td {
             padding: 5px; /* Поля вокруг содержимого ячеек */
             border: 1px solid black; /* Граница вокруг ячеек */
         }
+
         table {
             display: inline-block;
             vertical-align: middle;
+        }
+        h2 {
+            text-align: center;
+            margin-inside: 10px;
         }
     </style>
 </head>
 <body>
 <div class="title"><h1>Смешанная задача модели Леонтьева</h1></div>
 <div class="mission">
-    <p>Постановка задачи</p>
-По известной матрице прямых затрат и частично заданным векторам валовых и конечных выпусков построить таблицу МОБ.
-    <p>Условные обозначения</p>
-A – матрица прямых затрат
-    <br/>МОБ – межотраслевой баланс
-    <br/>Y – вектор конечных выпусков
-    <br/>X – вектор валовых выпусков
-    <br/>n - количество отраслей экономики
-    <p class="notes">Примечания</p>
-<span class="notes">Подразумевается, что количество отраслей для модели экономики - четное число.</span>
+    <h2>Постановка задачи</h2>
+    <p>По известной матрице прямых затрат и частично заданным векторам валовых и конечных выпусков построить таблицу МОБ.</p>
+    <p><b>Условные обозначения</b>
+        <br/>A – матрица прямых затрат
+        <br/>МОБ – межотраслевой баланс
+        <br/>Y – вектор конечных выпусков
+        <br/>X – вектор валовых выпусков
+        <br/>n - количество отраслей экономики</p>
+
+    <p class="notes"><b>Примечания</b>
+        <br/>Подразумевается, что количество отраслей для модели экономики - четное число.</p>
 </div>
 <div class="enter">
     <label for='n'><b>Количество отраслей </b></label><input id='n' value='4' size="2" maxlength="2"/>
+
     <div>
         <input class="button" type='button' value='Ввести данные' onclick='build();'/>
         <input class="button" type='button' value='Построить решение' onclick='calc();'/>

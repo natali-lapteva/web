@@ -3,39 +3,133 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Прямая задача</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+    <style>
+        #mobBasicYear_table table,
+        #mobForecastYear_table table {
+            width: 100%; /* Ширина таблицы */
+            border: 4px double black; /* Рамка вокруг таблицы */
+            border-collapse: collapse; /* Отображать только одинарные линии */
+            text-align: center;
+        }
+
+        #mobBasicYear_table th,
+        #mobForecastYear_table th {
+            text-align: left; /* Выравнивание по левому краю */
+            background: #ccc; /* Цвет фона ячеек */
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+
+        #mobBasicYear_table td,
+        #mobForecastYear_table td {
+            padding: 5px; /* Поля вокруг содержимого ячеек */
+            border: 1px solid black; /* Граница вокруг ячеек */
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        #data {
+            margin: 10px;
+            display: table;
+        }
+
+        .task {
+            margin: 20px;
+            border: inset;
+            text-align: center;
+        }
+
+        .button {
+            text-align: center;
+            font-weight: bold;
+            width: 300px;
+            height: 30px;
+        }
+
+        #n {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        h1, h2, p, h4 {
+            margin: 10px 20px;
+        }
+
+        h4 {
+            text-align: center;
+        }
+
+        p, ul {
+            text-align: left;
+            text-indent: 3%;
+        }
+
+        li {
+            list-style-position: inside;
+        }
+
+        #mobBasicYear, #mobForecastYear {
+            border: 1px solid gray;
+            margin: 5px;
+            padding: 5px;
+        }
+
+        .given {
+            display: table-cell;
+            text-align: center;
+            font-weight: bold;
+            padding-left: 20px;
+            vertical-align: middle;
+
+        }
+
+        table {
+            vertical-align: middle;
+        }
+    </style>
     <link rel="icon" href="http://www.aup.ru/articles/economics/12.files/image040.gif"/>
 </head>
 <body>
-<div class="task">
-    <h1><ins>Прямая задача модели Леонтьева</ins></h1>
+<div class="task"><h1>Прямая задача модели Леонтьева</h1>
+
     <h2>Задача прогнозирования</h2>
 </div>
 <div class="task">
     <h2>Постановка задачи</h2>
-    <p>По известной матрице прямых затрат и вектору валовых выпусков найти конечные выпуски отраслей в n-отраслевой модели экономики.</p>
-    <p>Осуществить прогноз развития экономики на следующий год, в предположении, что в течение следующего года произойдет:</p>
-        <ul type="disk">
-            <li>изменение объемов валовых выпусков продукции всех отраслей</li>
-        </ul>
+
+    <p>По известной матрице прямых затрат и вектору валовых выпусков найти конечные выпуски отраслей в n-отраслевой
+        модели экономики.</p>
+
+    <p>Осуществить прогноз развития экономики на следующий год, в предположении, что в течение следующего года
+        произойдет:</p>
+    <ul type="disk">
+        <li>изменение объемов валовых выпусков продукции всех отраслей</li>
+    </ul>
     <p>Составить таблицы МОБ по базовому и прогнозному годам.</p>
 </div>
 
 <div class="task">
     <h2>Входные данные</h2>
     <label for='n'><b>Количество отраслей </b></label><input id='n' value='3'/>
+
     <h2>
         <input class="button" type='button' value='Ввести данные' onclick='build();'/>
         <input class="button" type='button' value='Построить решение базового года' onclick='calc();'/>
         <input class="button" type='button' value='Построить решение прогнозного года' onclick='calcForecastYear();'/>
         <input class="button" type='button' value='Очистить' onclick='cl();'/>
     </h2>
+
     <div id='data'></div>
 </div>
 
 <div class="task">
     <h2>Выходные данные</h2>
+
     <div id='mobBasicYear' align="center"></div>
+
     <div id='mobForecastYear' align="center"></div>
 </div>
 
@@ -53,8 +147,8 @@
         n = parseInt($('#n').val(), 10);
         $data.append('<div class="given">Матрица прямых затрат базового года   A = </div>');
         $data.append(getTable(n, n, 'A'));
-        for(i = 0 ; i < n; i++) {
-            for(var j = 0 ; j < n ; j++) {
+        for (i = 0; i < n; i++) {
+            for (var j = 0; j < n; j++) {
                 var value = Math.random().toFixed(2);
                 setValue('A', i, j, value);
             }
@@ -63,7 +157,7 @@
         $data.append(getTable(n, 1, 'X'));
         $data.append('<div class="given">Прогноз изменения вектора выловых выпусков в процентах X<sub>1</sub> =</div>');
         $data.append(getTable(n, 1, 'alpha'));
-        for(i = 0; i < n; i++) {
+        for (i = 0; i < n; i++) {
             var percent = Math.round(Math.random() * 4 + 1) * 10;
             setValue('alpha', i, 0, percent);
         }
@@ -92,7 +186,7 @@
         $mobForecastYear.append(mob.getTable());
     }
 
-    function getMobByX (X, id) {
+    function getMobByX(X, id) {
         n = parseInt($('#n').val(), 10);
 
         var Y = [];
